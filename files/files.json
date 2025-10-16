@@ -5,20 +5,26 @@
       "items": [
         {
           "name": "entertaining_sample.txt",
-          "title": "Funny Jokes (sample)",
-          "description": "A tiny text file with jokes",
+          "title": "entertaining_sample.txt",
+          "description": "",
           "path": "files/Entertaining/entertaining_sample.txt"
+        },
+        {
+          "name": "tentertainment.txt",
+          "title": "tentertainment.txt",
+          "description": "",
+          "path": "files/Entertaining/tentertainment.txt"
         }
       ]
     },
     {
-      "name": "Fan Fiction",
+      "name": "Fan-Fiction",
       "items": [
         {
-          "name": "fanfic_sample.txt",
-          "title": "Short Fan Fiction (sample)",
-          "description": "A short fanfiction snippet",
-          "path": "files/Fan Fiction/fanfic_sample.txt"
+          "name": "fanfiction_sample.txt",
+          "title": "fanfiction_sample.txt",
+          "description": "",
+          "path": "files/Fan-Fiction/fanfiction_sample.txt"
         }
       ]
     },
@@ -26,10 +32,10 @@
       "name": "Memories",
       "items": [
         {
-          "name": "memories_sample.jpg",
-          "title": "Old Memory Photo",
-          "description": "A sample image",
-          "path": "files/Memories/memories_sample.jpg"
+          "name": "memories_sample.txt",
+          "title": "memories_sample.txt",
+          "description": "",
+          "path": "files/Memories/memories_sample.txt"
         }
       ]
     },
@@ -37,10 +43,10 @@
       "name": "World",
       "items": [
         {
-          "name": "world_sample.pdf",
-          "title": "World Map (sample)",
-          "description": "Short PDF file",
-          "path": "files/World/world_sample.pdf"
+          "name": "world_sample.txt",
+          "title": "world_sample.txt",
+          "description": "",
+          "path": "files/World/world_sample.txt"
         }
       ]
     }
