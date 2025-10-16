@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Browser Files</title>
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="site-head">
+      <h1>Simple Browser Files</h1>
+      <p class="lead">Small static file host. Add files to <code>files/</code> grouped by category (subfolders), or edit <code>files/files.json</code>.</p>
+      <p class="meta">Categories: Entertaining • Fan Fiction • Memories • World (add more by creating new subfolders)</p>
+    </header>
+
+    <section id="controls" class="controls">
+      <label for="search">Search files:</label>
+      <input id="search" placeholder="Type to filter by name or description" />
+    </section>
+
+    <section id="content"></section>
+
+    <footer>
+      <p>Hosted on GitHub Pages — repo: <a href="https://github.com/skywalker94-user/SimpleBrowserFiles" target="_blank" rel="noopener">skywalker94-user/SimpleBrowserFiles</a></p>
+    </footer>
+  </main>
+
+<script>
+  const FILES_JSON = 'files/files.json';
+
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function makeFileLink(item) {
+    const url = new URL(item.path, location.href).href;
+    const ext = (item.path.split('.').pop() || '').toLowerCase();
+    return `
+      <div class="file">
+        <a class="file-link" href="${url}" target="_blank" rel="noopener">
+          <div class="file-meta">
+            <strong>${escapeHtml(item.title || item.name)}</strong>
+            <div class="file-sub">${escapeHtml(item.description || '')}</div>
+          </div>
+          <div class="file-ext">${escapeHtml(ext)}</div>
+        </a>
+      </div>`;
+  }
+
+  // render categories & files from data object
+  function render(data) {
+    const content = document.getElementById('content');
+    if (!data || !data.categories) {
+      content.innerHTML = '<p class="err">No files manifest found. Add <code>files/files.json</code> or enable the auto-generator.</p>';
+      return;
+    }
+
+    const searchInput = document.getElementById('search');
+    function doRender(filter='') {
+      let html = '';
+      data.categories.forEach(cat => {
+        const items = (cat.items || []).filter(item => {
+          if (!filter) return true;
+          const s = (item.title + ' ' + (item.description || '') + ' ' + item.name).toLowerCase();
+          return s.includes(filter.toLowerCase());
+        });
+
+        html += `<section class="category">
+                   <h2>${escapeHtml(cat.name)}</h2>`;
+        if (items.length) {
+          html += '<div class="files-grid">';
+          items.forEach(item => html += makeFileLink(item));
+          html += '</div>';
+        } else {
+          html += '<p class="empty">No files in this category.</p>';
+        }
+        html += '</section>';
+      });
+      content.innerHTML = html;
+    }
+
+    searchInput.addEventListener('input', () => doRender(searchInput.value.trim()));
+    doRender('');
+  }
+
+  fetch(FILES_JSON)
+    .then(r => {
+      if (!r.ok) throw new Error('Could not load files.json (HTTP ' + r.status + ')');
+      return r.json();
+    })
+    .then(render)
+    .catch(async () => {
+      // fallback: attempt to load a minimal default manifest that expects subfolders
+      // (this helps if you used the auto-generator but haven't generated yet)
+      document.getElementById('content').innerHTML = `<p class="err">Failed loading files manifest. See README or enable the auto-generator.</p>`;
+    });
+</script>
+</body>
+</html>
