@@ -4,6 +4,8 @@ on:
     paths:
       - 'files/**'
       - 'tools/generate_files_json.js'
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
