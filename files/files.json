@@ -1,0 +1,48 @@
+{
+  "categories": [
+    {
+      "name": "Entertaining",
+      "items": [
+        {
+          "name": "entertaining_sample.txt",
+          "title": "Funny Jokes (sample)",
+          "description": "A tiny text file with jokes",
+          "path": "files/Entertaining/entertaining_sample.txt"
+        }
+      ]
+    },
+    {
+      "name": "Fan Fiction",
+      "items": [
+        {
+          "name": "fanfic_sample.txt",
+          "title": "Short Fan Fiction (sample)",
+          "description": "A short fanfiction snippet",
+          "path": "files/Fan Fiction/fanfic_sample.txt"
+        }
+      ]
+    },
+    {
+      "name": "Memories",
+      "items": [
+        {
+          "name": "memories_sample.jpg",
+          "title": "Old Memory Photo",
+          "description": "A sample image",
+          "path": "files/Memories/memories_sample.jpg"
+        }
+      ]
+    },
+    {
+      "name": "World",
+      "items": [
+        {
+          "name": "world_sample.pdf",
+          "title": "World Map (sample)",
+          "description": "Short PDF file",
+          "path": "files/World/world_sample.pdf"
+        }
+      ]
+    }
+  ]
+}
