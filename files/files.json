@@ -27,6 +27,12 @@
       "name": "Fan-Fiction",
       "items": [
         {
+          "name": "[00_07] wolf-howling.mp3",
+          "title": "[00_07] wolf-howling.mp3",
+          "description": "",
+          "path": "files/Fan-Fiction/%5B00_07%5D%20wolf-howling.mp3"
+        },
+        {
           "name": "fanfiction_sample.txt",
           "title": "fanfiction_sample.txt",
           "description": "",
