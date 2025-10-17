@@ -36,6 +36,24 @@
           "title": "memories_sample.txt",
           "description": "",
           "path": "files/Memories/memories_sample.txt"
+        },
+        {
+          "name": "memory1.txt",
+          "title": "memory1.txt",
+          "description": "",
+          "path": "files/Memories/memory1.txt"
+        },
+        {
+          "name": "memory2.txt",
+          "title": "memory2.txt",
+          "description": "",
+          "path": "files/Memories/memory2.txt"
+        },
+        {
+          "name": "memory3.txt",
+          "title": "memory3.txt",
+          "description": "",
+          "path": "files/Memories/memory3.txt"
         }
       ]
     },
