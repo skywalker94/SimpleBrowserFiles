@@ -72,7 +72,7 @@ function categoryBlock(cat){
   const filesHtml = items.map(fileCard).join('');
   return `
     <section class="category">
-      <h2 class="cat-title">${esc(cat.name)} <span class="count" title="file count in category"><b>${items.length}</b></span></h2>
+      <h2 class="cat-title">${esc(cat.name)} <span class="count" title="file count in category"><strong>${items.length}</strong></span></h2>
       <div class="grid">${filesHtml || '<p class="empty">No files</p>'}</div>
     </section>
   `;
