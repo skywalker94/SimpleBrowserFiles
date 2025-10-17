@@ -49,7 +49,7 @@ h1{font-size:26px;margin:0;color:#071032;font-weight:700;}
 /* actions */
 .card-actions{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(2,6,23,0.03);background:transparent;justify-content:flex-end}
 .btn{padding:8px 12px;border-radius:8px;border:1px solid transparent;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn.open{background:linear-gradient(180deg,rgba(37,99,235,0.06),rgba(37,99,235,0.03));color:var(--accent);border:1px solid rgba(37,99,235,0.08)}
+.btn.open{background:linear-gradient(180deg,rgba(37,99,235,0.06),rgba(37,99,235,0.03));color:#38798f;border:1px solid rgba(37,99,235,0.08)}
 .btn.download{background:linear-gradient(180deg,#38798f, #313e58);border:1px solid rgba(2,6,23,0.06);color:#e7ecff;box-shadow:0 6px 18px rgba(10,14,20,0.03)}
 
 /* small states */
