@@ -27,7 +27,7 @@ h1{font-size:26px;margin:0;color:#071032;font-weight:700;}
 .icon{border:0;background:transparent;font-size:18px;cursor:pointer;color:var(--muted);padding:6px}
 
 /* Categories & grid */
-.category{margin:14px 0;padding:12px;border-radius:var(--radius);background:linear-gradient(180deg,var(--card),#d2d3d4);border:1px solid var(--glass);box-shadow:var(--shadow);}
+.category{margin:14px 0;padding:12px;border-radius:var(--radius);background:linear-gradient(180deg,var(--card),#e1e2e4);border:1px solid var(--glass);box-shadow:var(--shadow);}
 .cat-title{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px;font-size:16px;color:#071032;font-weight:700;}
 .cat-title .count{font-size:13px;color:var(--muted);font-weight:600;background:rgba(2,6,23,0.03);padding:6px 8px;border-radius:999px}
 
