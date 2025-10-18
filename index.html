@@ -36,15 +36,10 @@
 
 <script>
 const FILES_JSON = 'files/files.json';
-
-// helpers
 const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const noop = () => {};
 
-// determine type by extension
 function extType(ext){
   ext = (ext||'').toLowerCase();
-  if(!ext) return 'other';
   if(['jpg','jpeg','png','gif','webp','svg','bmp','ico'].includes(ext)) return 'image';
   if(['mp4','webm','ogg','mov','m4v'].includes(ext)) return 'video';
   if(['mp3','wav','ogg','m4a','flac'].includes(ext)) return 'audio';
@@ -54,7 +49,6 @@ function extType(ext){
   return 'other';
 }
 
-// file card HTML includes a preview stub (lazy-loaded)
 function fileCard(item){
   const path = item.path || item.name || '';
   const url = new URL(path, location.href).href;
@@ -66,7 +60,6 @@ function fileCard(item){
   return `
     <article class="card preview-${type}" data-path="${esc(path)}" data-ext="${esc(ext)}" tabindex="0">
       <div class="card-preview" aria-hidden="true">
-        <!-- preview target: filled by lazy loader -->
         <div class="preview-inner" data-type="${esc(type)}" data-path="${esc(path)}"></div>
       </div>
 
@@ -80,7 +73,7 @@ function fileCard(item){
         </div>
       </div>
 
-      <div class="card-actions">
+      <div class="card-actions" aria-hidden="false">
         <a class="btn open" href="${url}" target="_blank" rel="noopener" aria-label="Open ${title}">Open</a>
         <button class="btn download" data-path="${esc(path)}" aria-label="Download ${title}">Download</button>
       </div>
@@ -108,13 +101,13 @@ function render(data){
   container.innerHTML = data.categories.map(categoryBlock).join('');
   attachInteractions();
   initPreviewLazyLoader();
+  ensureActionsVisible();
 }
 
-/* ---------- interactions: downloads & keyboard ---------- */
+/* interactions */
 function attachInteractions(){
   const content = document.getElementById('content');
 
-  // Download handler (delegated)
   content.addEventListener('click', async (e) => {
     const dlBtn = e.target.closest('.btn.download');
     if(!dlBtn) return;
@@ -125,8 +118,7 @@ function attachInteractions(){
     try {
       const a = document.createElement('a');
       a.href = url;
-      const filename = path.split('/').pop();
-      a.setAttribute('download', filename);
+      a.setAttribute('download', path.split('/').pop());
       a.style.display='none';
       document.body.appendChild(a);
       a.click();
@@ -154,7 +146,6 @@ function attachInteractions(){
     }
   });
 
-  // keyboard: Enter/Space on card opens file link
   content.addEventListener('keydown', (e) => {
     const card = e.target.closest('.card');
     if(!card) return;
@@ -173,7 +164,7 @@ function showTempState(buttonEl, text){
   setTimeout(()=>{ buttonEl.innerHTML = orig; buttonEl.disabled = false; }, 1400);
 }
 
-/* ---------- preview lazy loader ---------- */
+/* preview loader (lazy) */
 function initPreviewLazyLoader(){
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
@@ -181,7 +172,7 @@ function initPreviewLazyLoader(){
       obs.unobserve(entry.target);
       loadPreviewFor(entry.target);
     });
-  }, { root: null, rootMargin: '200px', threshold: 0.06 });
+  }, { root: null, rootMargin: '200px', threshold: 0.05 });
 
   document.querySelectorAll('.preview-inner').forEach(el => io.observe(el));
 }
@@ -190,8 +181,6 @@ async function loadPreviewFor(previewEl){
   const type = previewEl.dataset.type;
   const path = previewEl.dataset.path;
   if(!type || !path) return;
-  const wrapper = previewEl;
-
   try {
     if(type === 'image'){
       const img = document.createElement('img');
@@ -200,12 +189,11 @@ async function loadPreviewFor(previewEl){
       img.loading = 'lazy';
       img.src = new URL(path, location.href).href;
       img.className = 'preview-img';
-      wrapper.appendChild(img);
+      previewEl.appendChild(img);
       return;
     }
 
     if(type === 'text'){
-      // fetch small snippet
       const resp = await fetch(path);
       if(!resp.ok) throw new Error('fetch fail');
       const text = await resp.text();
@@ -213,7 +201,7 @@ async function loadPreviewFor(previewEl){
       const pre = document.createElement('pre');
       pre.className = 'preview-text';
       pre.textContent = snippet + (text.length > 320 ? ' …' : '');
-      wrapper.appendChild(pre);
+      previewEl.appendChild(pre);
       return;
     }
 
@@ -223,7 +211,10 @@ async function loadPreviewFor(previewEl){
       audio.preload = 'metadata';
       audio.src = new URL(path, location.href).href;
       audio.className = 'preview-audio';
-      wrapper.appendChild(audio);
+      // ensure audio isn't squashed
+      audio.style.width = '100%';
+      audio.style.height = 'auto';
+      previewEl.appendChild(audio);
       return;
     }
 
@@ -235,7 +226,9 @@ async function loadPreviewFor(previewEl){
       video.preload = 'metadata';
       video.className = 'preview-video';
       video.src = new URL(path, location.href).href;
-      wrapper.appendChild(video);
+      // avoid the video stealing pointer events for elements below it
+      video.style.pointerEvents = 'auto';
+      previewEl.appendChild(video);
       return;
     }
 
@@ -244,28 +237,46 @@ async function loadPreviewFor(previewEl){
       iframe.className = 'preview-pdf';
       iframe.src = new URL(path, location.href).href;
       iframe.title = 'PDF preview';
-      wrapper.appendChild(iframe);
+      previewEl.appendChild(iframe);
       return;
     }
 
-    // fallback icon / label for other types
     const box = document.createElement('div');
     box.className = 'preview-blank';
     box.innerHTML = `<div class="file-type-tag">${esc(previewEl.closest('.card').dataset.ext || '').toUpperCase()}</div>`;
-    wrapper.appendChild(box);
+    previewEl.appendChild(box);
     return;
-
   } catch (err) {
-    // graceful fallback: show extension tag
     const box = document.createElement('div');
     box.className = 'preview-blank';
     box.innerHTML = `<div class="file-type-tag">${esc(previewEl.closest('.card').dataset.ext || '').toUpperCase()}</div>`;
-    wrapper.appendChild(box);
+    previewEl.appendChild(box);
     console.warn('Preview load failed', err);
   }
 }
 
-/* ---------- search & init ---------- */
+/* ensure actions visible: if a preview element is tall or the browser put controls on top,
+   make sure the actions area is visible and clickable */
+function ensureActionsVisible(){
+  document.querySelectorAll('.card').forEach(card => {
+    const actions = card.querySelector('.card-actions');
+    if(!actions) return;
+    // guarantee z-index and background to remain on top
+    actions.style.position = 'relative';
+    actions.style.zIndex = 2;
+    actions.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.0), rgba(255,255,255,1))';
+    // ensure pointer events are on for actions
+    actions.style.pointerEvents = 'auto';
+    // Also make sure the preview element does not cover the actions
+    const preview = card.querySelector('.card-preview');
+    if(preview){
+      preview.style.pointerEvents = 'auto';
+      preview.style.zIndex = 0;
+    }
+  });
+}
+
+/* search */
 function setupSearch(data){
   const input = document.getElementById('search');
   const clearBtn = document.getElementById('clearSearch');
@@ -297,7 +308,6 @@ function setupSearch(data){
   });
   clearBtn.addEventListener('click', () => { input.value = ''; clearBtn.hidden = true; render(data); input.focus(); });
 
-  // "/" focus shortcut
   document.addEventListener('keydown', (e) => {
     if(e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA'){
       e.preventDefault();
@@ -306,7 +316,7 @@ function setupSearch(data){
   });
 }
 
-// bootstrap
+/* boot */
 fetch(FILES_JSON)
   .then(r => { if(!r.ok) throw new Error('Failed to load ' + r.status); return r.json(); })
   .then(data => {
