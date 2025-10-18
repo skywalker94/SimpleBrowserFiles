@@ -44,6 +44,12 @@
       "name": "Memories",
       "items": [
         {
+          "name": "SKAI ISYOURGOD 八方來財 ⧸ 揽佬 dance cover.mp4",
+          "title": "SKAI ISYOURGOD 八方來財 ⧸ 揽佬 dance cover.mp4",
+          "description": "",
+          "path": "files/Memories/SKAI%20ISYOURGOD%20%E5%85%AB%E6%96%B9%E4%BE%86%E8%B2%A1%20%E2%A7%B8%20%E6%8F%BD%E4%BD%AC%20dance%20cover.mp4"
+        },
+        {
           "name": "lyalaugh.png",
           "title": "lyalaugh.png",
           "description": "",
@@ -126,12 +132,6 @@
           "title": "memory9.txt",
           "description": "",
           "path": "files/Memories/memory9.txt"
-        },
-        {
-          "name": "八方來財 ⧸ 揽佬SKAI ISYOURGOD #dance cover.webm",
-          "title": "八方來財 ⧸ 揽佬SKAI ISYOURGOD #dance cover.webm",
-          "description": "",
-          "path": "files/Memories/%E5%85%AB%E6%96%B9%E4%BE%86%E8%B2%A1%20%E2%A7%B8%20%E6%8F%BD%E4%BD%ACSKAI%20ISYOURGOD%20%23dance%20cover.webm"
         }
       ]
     },
